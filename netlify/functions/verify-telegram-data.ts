@@ -9,10 +9,15 @@ interface TelegramInitData {
   [key: string]: string | undefined
 }
 
-const BOT_TOKEN = '8127680485:AAEYn53yj60WFWyojtEU8T6mX1Hxj_bHLBg'
+const BOT_TOKEN = process.env.BOT_TOKEN
 
 function verifyTelegramWebAppData(telegramInitData: string): boolean {
   try {
+    if (!BOT_TOKEN) {
+      console.error('BOT_TOKEN environment variable is not set')
+      return false
+    }
+
     const urlParams = new URLSearchParams(telegramInitData)
     const hash = urlParams.get('hash')
     
