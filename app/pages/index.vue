@@ -78,8 +78,8 @@
 
     <TgSection title="Links" inset>
       <div class="p-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-        <TgButton title="Open Link" haptic @click="openLink('https://example.com')" />
-        <TgButton title="Open Telegram" haptic @click="openTelegramLink('https://t.me/telegram')" />
+        <TgButton title="Open Link" haptic @click="openLink('https://t.me/n')" />
+        <TgButton title="Open Telegram" haptic @click="openTelegramLink('https://t.me/nuxt_tg_demo_bot')" />
         <TgButton title="Share URL" haptic="notification-success" :share-url="shareUrl" />
       </div>
     </TgSection>
@@ -97,8 +97,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch, computed } from 'vue'
 import { toHex } from '~/utils/color'
-import { useRequestURL } from '#app'
-import { useRouter } from 'vue-router'
+import { useRequestURL, navigateTo } from '#app'
+import { useRoute } from 'vue-router'
 import {
   useBackButton,
   useHapticFeedback,
@@ -112,7 +112,7 @@ import {
   shareURL,
 } from '~/composables/telegram'
 
-const router = useRouter()
+const route = useRoute()
 const back = useBackButton()
 const main = useMainButton()
 const haptic = useHapticFeedback()
@@ -134,17 +134,17 @@ const navItems: NavItem[] = [
 ]
 const activeTab = ref('home')
 
-watch(() => router.currentRoute.value.path, (p) => {
+watch(() => route.path, (p) => {
   const match = navItems.find(i => i.to === p)
   if (match) activeTab.value = match.key
 }, { immediate: true })
 
 function onSelectTab(item: NavItem) {
-  if (item.to) router.push(item.to)
+  if (item.to) navigateTo(item.to)
 }
 
 function goDetails() {
-  router.push('/details')
+  navigateTo('/details')
 }
 
 function toggleMain() {

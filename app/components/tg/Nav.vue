@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed bottom-0 inset-x-0 border-t border-sectionSeparator bg-bg/95 backdrop-blur supports-[backdrop-filter]:bg-bg/80"
+    class="fixed bottom-0 inset-x-0 border-t border-sectionSeparator bg-bg backdrop-blur supports-[backdrop-filter]:bg-bg50"
     :class="[rootClass]"
     role="tablist"
   >

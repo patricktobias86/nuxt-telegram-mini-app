@@ -32,10 +32,11 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { navigateTo } from '#app'
+import { useRoute } from 'vue-router'
 import { useBackButton, useMainButton } from '~/composables/telegram'
 
-const router = useRouter()
+const route = useRoute()
 const back = useBackButton()
 const main = useMainButton()
 
@@ -49,21 +50,23 @@ const navItems: NavItem[] = [
 ]
 const activeTab = ref('details')
 
-watch(() => router.currentRoute.value.path, (p) => {
+watch(() => route.path, (p) => {
   const match = navItems.find(i => i.to === p)
   if (match) activeTab.value = match.key
 }, { immediate: true })
 
 function onSelectTab(item: NavItem) {
-  if (item.to) router.push(item.to)
+  if (item.to) navigateTo(item.to)
 }
 
 function goBack() {
-  router.back()
+  if (import.meta.client) {
+    window.history.back()
+  }
 }
 
 function goHome() {
-  router.replace('/')
+  navigateTo('/', { replace: true })
 }
 
 onMounted(() => {
