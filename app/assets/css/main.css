@@ -1,0 +1,53 @@
+:root {
+  --tg-color-scheme: dark;
+  --tg-theme-bg-color: #212121;
+  --tg-theme-button-color: #0F8AFF;
+  --tg-theme-button-text-color: #ffffff;
+  --tg-theme-hint-color: #5D5F62;
+  --tg-theme-link-color: #0F8AFF;
+  --tg-theme-secondary-bg-color: #181818;
+  --tg-theme-text-color: #ffffff;
+
+  --tg-theme-section-bg-color: var(--tg-theme-bg-color);
+  --tg-theme-section-separator-color: var(--tg-theme-secondary-bg-color);
+  --tg-theme-button-color-light: #4fb3ff;
+  --tg-theme-header-bg-color: #FFFFFF;
+  --tg-theme-accent-text-color: #536A89;
+  --tg-theme-section-header-text-color: var(--tg-theme-hint-color);
+  --tg-theme-subtitle-text-color: #999999;
+  --tg-theme-destructive-text-color: #D14E4E;
+  --tg-viewport-height: 100vh;
+  --tg-viewport-stable-height: 100vh;
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  --safe-area-inset-bottom: calc(100vh - var(--tg-viewport-stable-height, 100vh));
+}
+
+body {
+  color: var(--tg-theme-text-color);
+  background-color: var(--tg-theme-secondary-bg-color);
+  font-family: Roboto, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-top: 1rem;
+}
+
+/* Reduce accidental zoom/pinch interactions on mobile */
+html, body {
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+  overscroll-behavior: contain;
+}
+
+.tg-bg { background-color: var(--tg-theme-secondary-bg-color); }
+.tg-secondary-bg { background-color: var(--tg-theme-secondary-bg-color); }
+.tg-section-bg { background-color: var(--tg-theme-section-bg-color); }
+.tg-link, a { color: var(--tg-theme-link-color); }
+.tg-primary, .tg-button { background-color: var(--tg-theme-button-color); color: var(--tg-theme-button-text-color); }
+.tg-button-danger { background-color: var(--tg-theme-destructive-text-color); color: var(--tg-theme-button-text-color); }
+.tg-hint { color: var(--tg-theme-hint-color); }
+.tg-accent { color: var(--tg-theme-accent-text-color); }
+.tg-danger { color: var(--tg-theme-destructive-text-color); }
+.text-tg { color: var(--tg-theme-text-color); }
+.tg-button-text { color: var(--tg-theme-button-text-color); }
