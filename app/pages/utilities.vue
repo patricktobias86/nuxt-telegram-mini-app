@@ -257,7 +257,7 @@
       </div>
     </TgSection>
 
-    <div class="h-2" />
+    <div class="h-2"></div>
   </TgContent>
 
   <TgNav v-model="activeTab" :items="navItems" @select="onSelectTab" />
@@ -265,12 +265,12 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
-import { useRequestURL } from 'nuxt/app'
-import { 
-  useInitData, 
-  useThemeParams, 
-  useViewport, 
+import { useRoute } from 'vue-router'
+import { useRequestURL, navigateTo } from '#app'
+import {
+  useInitData,
+  useThemeParams,
+  useViewport,
   useMainButton,
   openLink,
   openTelegramLink,
@@ -278,7 +278,7 @@ import {
 } from '~/composables/telegram'
 import { toHex } from '~/utils/color'
 
-const router = useRouter()
+const route = useRoute()
 const init = useInitData()
 const theme = useThemeParams()
 const viewport = useViewport()
@@ -294,18 +294,18 @@ const navItems: NavItem[] = [
 ]
 const activeTab = ref('utilities')
 
-watch(() => router.currentRoute.value.path, (p) => {
+watch(() => route.path, (p) => {
   const match = navItems.find(i => i.to === p)
   if (match) activeTab.value = match.key
 }, { immediate: true })
 
 function onSelectTab(item: NavItem) {
-  if (item.to) router.push(item.to)
+  if (item.to) navigateTo(item.to)
 }
 
 // Sharing
 const reqURL = useRequestURL()
-const shareUrl = computed(() => process.client ? window.location.href : reqURL.href)
+const shareUrl = computed(() => import.meta.client ? window.location.href : reqURL.href)
 
 // Data validation
 const initDataAvailable = computed(() => !!init.state.value)
@@ -335,15 +335,15 @@ const colorAnalysis = computed(() => [
 // Performance monitoring
 const renderCount = ref(0)
 const viewportInfo = computed(() => `${viewport.width.value}×${viewport.height.value}`)
-const devicePixelRatio = computed(() => process.client ? window.devicePixelRatio : 1)
+const devicePixelRatio = computed(() => import.meta.client ? window.devicePixelRatio : 1)
 const connectionType = computed(() => {
-  if (!process.client) return 'Unknown'
+  if (!import.meta.client) return 'Unknown'
   // @ts-ignore
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
   return connection?.effectiveType || 'Unknown'
 })
 const memoryInfo = computed(() => {
-  if (!process.client) return 'Unknown'
+  if (!import.meta.client) return 'Unknown'
   // @ts-ignore
   const memory = performance.memory
   if (memory) {
@@ -367,7 +367,7 @@ const storedDataDisplay = computed(() => {
 })
 
 function saveToStorage() {
-  if (!process.client || !storageKey.value || !storageValue.value) return
+  if (!import.meta.client || !storageKey.value || !storageValue.value) return
   try {
     localStorage.setItem(storageKey.value, storageValue.value)
     loadAllStoredData()
@@ -377,7 +377,7 @@ function saveToStorage() {
 }
 
 function loadFromStorage() {
-  if (!process.client || !storageKey.value) return
+  if (!import.meta.client || !storageKey.value) return
   try {
     const value = localStorage.getItem(storageKey.value)
     if (value !== null) {
@@ -389,7 +389,7 @@ function loadFromStorage() {
 }
 
 function loadAllStoredData() {
-  if (!process.client) return
+  if (!import.meta.client) return
   const data: Record<string, string> = {}
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
@@ -401,7 +401,7 @@ function loadAllStoredData() {
 }
 
 function clearStorage() {
-  if (!process.client) return
+  if (!import.meta.client) return
   localStorage.clear()
   storedData.value = {}
   storageKey.value = 'demo-key'
@@ -439,7 +439,7 @@ onMounted(() => {
         main.setParams({ text: 'Re-render ✓' })
       },
       () => {
-        if (process.client) {
+        if (import.meta.client) {
           const url = window.location.href
           shareURL(url)
         }

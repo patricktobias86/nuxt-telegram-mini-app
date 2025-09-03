@@ -142,3 +142,5 @@ package-lock.json
 AGENTS.md
 # Local Netlify folder
 .netlify
+
+.clinerules

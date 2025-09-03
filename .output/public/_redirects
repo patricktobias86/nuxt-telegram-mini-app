@@ -1,2 +1,0 @@
-# SPA fallback - serve index.html for all routes
-/*    /index.html   200

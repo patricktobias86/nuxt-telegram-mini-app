@@ -1,1 +1,0 @@
-function s(t){if(!t)return"—";if(typeof t=="string"){const r=t.trim();return r.startsWith("#")?r:"—"}const{r:o,g:e,b:i}=t;if(typeof o!="number"||typeof e!="number"||typeof i!="number")return"—";const n=r=>r.toString(16).padStart(2,"0");return`#${n(o)}${n(e)}${n(i)}`}function f(t){return new URL(window.location.href)}export{s as t,f as u};
