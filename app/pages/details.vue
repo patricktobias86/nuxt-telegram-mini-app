@@ -3,7 +3,7 @@
     <Hero
       title="Details"
       subtitle="Showcasing components and SDK integrations"
-      image-src="/img/hero-user.gif"
+      image-src="/img/hero-user.svg"
     />
 
     <TgSection title="Navigation" inset>

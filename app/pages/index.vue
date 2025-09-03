@@ -3,7 +3,7 @@
     <Hero
       title="Telegram Mini App Demo"
       subtitle="Showcasing components and SDK integrations"
-      image-src="/img/hero-user.gif"
+      image-src="/img/hero-user.svg"
     />
 
     <TgSection title="Navigation" inset>

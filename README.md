@@ -1,6 +1,6 @@
 # 🚀 Nuxt Telegram Mini App Template
 
-A comprehensive template for building Telegram Mini Apps using Nuxt 3, Vue 3, TypeScript, and Tailwind CSS, ready for deployment on Netlify.
+A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, TypeScript, and Tailwind CSS, ready for deployment on Netlify.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Nuxt](https://img.shields.io/badge/Nuxt-3.x-00DC82)
@@ -11,7 +11,7 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 3, Vue 3, Ty
 ## ✨ Features
 
 ### 🎯 Core Features
-- **🔧 Complete Nuxt 3 Setup** - Latest Nuxt with TypeScript support
+- **🔧 Complete Nuxt 4 Setup** - Latest Nuxt with TypeScript support
 - **📱 Telegram WebApp SDK** - Full integration with Telegram Mini App APIs
 - **🎨 Tailwind CSS** - Utility-first CSS framework with Telegram theme integration
 - **⚡ SPA Mode** - Optimized for Telegram Mini App deployment
@@ -420,7 +420,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🏗️ Built With
 
-- [Nuxt 3](https://nuxt.com/) - The Vue.js Framework
+- [Nuxt 4](https://nuxt.com/) - The Vue.js Framework
 - [Vue 3](https://vuejs.org/) - The Progressive JavaScript Framework
 - [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
@@ -431,7 +431,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - [Demo](https://your-demo-url.netlify.app) - Live demo
 - [Telegram Mini Apps Guide](https://core.telegram.org/bots/webapps)
-- [Nuxt 3 Documentation](https://nuxt.com/docs)
+- [Nuxt 4 Documentation](https://nuxt.com/docs)
 - [Vue 3 Documentation](https://vuejs.org/guide/)
 
 ---
