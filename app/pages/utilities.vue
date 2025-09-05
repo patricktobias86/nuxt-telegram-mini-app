@@ -2,8 +2,6 @@
   <TgContent>
     <Hero
       title="Utilities Demo"
-      subtitle="Advanced features and utility functions showcase"
-      image-src="/img/hero-user.svg"
     />
 
     <TgSection title="Link Utilities" inset>

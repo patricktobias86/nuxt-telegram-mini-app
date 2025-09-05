@@ -33,9 +33,9 @@ root/
 │   │   └── telegram-webapp.ts # Telegram WebApp types
 │   └── utils/              # Utility functions
 │       └── color.ts        # Color conversion utilities
-├── netlify/                # Netlify functions (serverless)
-│   └── functions/
-│       └── verify-telegram-data.ts # Telegram data verification
+├── server/                 # Nuxt server API
+│   └── api/
+│       └── verify-telegram-data.post.ts # Telegram data verification
 ├── public/                 # Static public assets
 │   ├── _redirects         # Netlify redirects
 │   ├── robots.txt         # SEO robots file

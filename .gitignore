@@ -140,7 +140,8 @@ vite.config.ts.timestamp-*
 
 package-lock.json
 AGENTS.md
-# Local Netlify folder
-.netlify
 
+# Local development folders
+.netlify
 .clinerules
+.output

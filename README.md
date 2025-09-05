@@ -105,9 +105,9 @@ npm run generate
 │   │   └── telegram-webapp.ts
 │   └── utils/              # Utility functions
 │       └── color.ts        # Color conversion utilities
-├── netlify/                # Netlify functions
-│   └── functions/
-│       └── verify-telegram-data.ts
+├── server/                 # Nuxt server API
+│   └── api/
+│       └── verify-telegram-data.post.ts # Telegram data verification
 ├── public/                 # Static assets
 ├── tests/                  # Test files
 │   └── telegram.spec.ts

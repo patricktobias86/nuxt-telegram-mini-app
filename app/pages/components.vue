@@ -3,7 +3,6 @@
     <Hero
       title="Components Demo"
       subtitle="Interactive showcase of all Telegram Mini App components"
-      image-src="/img/hero-user.svg"
     />
 
     <TgSection title="Buttons" inset>
@@ -200,7 +199,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { navigateTo } from '#app'
-import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram'
+import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram.ts'
 
 const route = useRoute()
 const haptic = useHapticFeedback()

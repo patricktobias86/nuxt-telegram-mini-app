@@ -1,5 +1,6 @@
-import { Handler } from '@netlify/functions'
 import { createHmac } from 'node:crypto'
+import { defineEventHandler, getMethod, readBody, setHeaders, createError } from 'h3'
+
 
 interface TelegramInitData {
   query_id?: string
@@ -55,44 +56,37 @@ function isDataFresh(authDate: string, maxAgeSeconds: number = 86400): boolean {
   return (currentTimestamp - authTimestamp) <= maxAgeSeconds
 }
 
-export const handler: Handler = async (event, context) => {
+export default defineEventHandler(async (event) => {
   // Set CORS headers
-  const headers = {
+  setHeaders(event, {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
-  }
+  })
 
   // Handle preflight requests
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    }
+  if (getMethod(event) === 'OPTIONS') {
+    return ''
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
+  if (getMethod(event) !== 'POST') {
+    throw createError({
       statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    }
+      statusMessage: 'Method not allowed'
+    })
   }
 
   try {
-    const { initData } = JSON.parse(event.body || '{}')
+    const body = await readBody(event)
+    const { initData } = body
 
     if (!initData) {
-      return {
+      throw createError({
         statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          error: 'Missing initData parameter',
-          valid: false 
-        })
-      }
+        statusMessage: 'Missing initData parameter',
+        data: { valid: false }
+      })
     }
 
     // Verify the data authenticity
@@ -100,12 +94,8 @@ export const handler: Handler = async (event, context) => {
 
     if (!isValid) {
       return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          valid: false,
-          error: 'Invalid signature'
-        })
+        valid: false,
+        error: 'Invalid signature'
       }
     }
 
@@ -115,12 +105,8 @@ export const handler: Handler = async (event, context) => {
     
     if (!authDate) {
       return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          valid: false,
-          error: 'Missing auth_date'
-        })
+        valid: false,
+        error: 'Missing auth_date'
       }
     }
 
@@ -129,12 +115,8 @@ export const handler: Handler = async (event, context) => {
 
     if (!isFresh) {
       return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          valid: false,
-          error: 'Data is too old'
-        })
+        valid: false,
+        error: 'Data is too old'
       }
     }
 
@@ -150,26 +132,19 @@ export const handler: Handler = async (event, context) => {
     }
 
     return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        valid: true,
-        user,
-        auth_date: parseInt(authDate, 10),
-        query_id: urlParams.get('query_id'),
-        start_param: urlParams.get('start_param')
-      })
+      valid: true,
+      user,
+      auth_date: parseInt(authDate, 10),
+      query_id: urlParams.get('query_id'),
+      start_param: urlParams.get('start_param')
     }
 
   } catch (error) {
-    console.error('Function error:', error)
-    return {
+    console.error('API error:', error)
+    throw createError({
       statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: 'Internal server error',
-        valid: false 
-      })
-    }
+      statusMessage: 'Internal server error',
+      data: { valid: false }
+    })
   }
-}
+})
