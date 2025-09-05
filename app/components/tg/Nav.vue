@@ -6,17 +6,27 @@
   >
     <ul class="mx-auto grid" :style="gridStyle">
       <li v-for="item in items" :key="item.key">
-        <component
-          :is="item.to ? 'NuxtLink' : 'button'"
+        <NuxtLink
+          v-if="item.to"
           :to="item.to"
+          class="h-14 w-full flex flex-col items-center justify-center gap-1 text-xs text-hint hover:text-text transition-colors"
+          :class="{ 'text-text': currentActiveKey === item.key }"
+          :aria-current="currentActiveKey === item.key ? 'page' : undefined"
+        >
+          <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" :class="currentActiveKey === item.key ? 'text-text' : ''" />
+          <span :class="currentActiveKey === item.key ? 'text-text' : ''">{{ item.label }}</span>
+        </NuxtLink>
+        <button
+          v-else
           type="button"
           class="h-14 w-full flex flex-col items-center justify-center gap-1 text-xs text-hint hover:text-text transition-colors"
-          :aria-current="modelValue === item.key ? 'page' : undefined"
+          :class="{ 'text-text': currentActiveKey === item.key }"
+          :aria-current="currentActiveKey === item.key ? 'page' : undefined"
           @click="onSelect(item)"
         >
-          <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" :class="modelValue === item.key ? 'text-text' : ''" />
-          <span :class="modelValue === item.key ? 'text-text' : ''">{{ item.label }}</span>
-        </component>
+          <Icon v-if="item.icon" :name="item.icon" class="h-5 w-5" :class="currentActiveKey === item.key ? 'text-text' : ''" />
+          <span :class="currentActiveKey === item.key ? 'text-text' : ''">{{ item.label }}</span>
+        </button>
       </li>
     </ul>
     <div class="pb-[var(--safe-area-inset-bottom)]" />
@@ -25,6 +35,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 export interface TgNavItem {
   key: string
@@ -49,7 +60,20 @@ const emit = defineEmits<{
   (e: 'select', item: TgNavItem): void
 }>()
 
-const modelValue = computed(() => props.modelValue)
+const route = useRoute()
+
+// Determine active key based on current route
+const currentActiveKey = computed(() => {
+  // First try to match by route path
+  const matchedItem = props.items.find(item => item.to === route.path)
+  if (matchedItem) {
+    return matchedItem.key
+  }
+  
+  // Fallback to modelValue prop
+  return props.modelValue || ''
+})
+
 const gridStyle = computed(() => ({ gridTemplateColumns: `repeat(${Math.min(props.items.length || 1, 4)}, minmax(0, 1fr))` }))
 
 function onSelect(item: TgNavItem) {
@@ -61,4 +85,3 @@ function onSelect(item: TgNavItem) {
 <style scoped>
 ul { max-width: 32rem; }
 </style>
-

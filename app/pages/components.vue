@@ -192,13 +192,12 @@
     <div class="h-2" />
   </TgContent>
 
-  <TgNav v-model="activeTab" :items="navItems" @select="onSelectTab" />
+  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { navigateTo } from '#app'
 import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram.ts'
 
 const route = useRoute()
@@ -215,16 +214,6 @@ const navItems: NavItem[] = [
   { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
   { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' },
 ]
-const activeTab = ref('components')
-
-watch(() => route.path, (p) => {
-  const match = navItems.find(i => i.to === p)
-  if (match) activeTab.value = match.key
-}, { immediate: true })
-
-function onSelectTab(item: NavItem) {
-  if (item.to) navigateTo(item.to)
-}
 
 // Interactive state
 const loadingButton = ref(false)
@@ -320,7 +309,7 @@ onMounted(() => {
   })
 
   onBeforeUnmount(() => {
-    if (off) off()
+    off?.()
   })
 })
 </script>

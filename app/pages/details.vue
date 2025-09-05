@@ -27,7 +27,7 @@
     <div class="h-2" />
   </TgContent>
 
-  <TgNav v-model="activeTab" :items="navItems" @select="onSelectTab" />
+  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
@@ -48,16 +48,6 @@ const navItems: NavItem[] = [
   { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
   { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' },
 ]
-const activeTab = ref('details')
-
-watch(() => route.path, (p) => {
-  const match = navItems.find(i => i.to === p)
-  if (match) activeTab.value = match.key
-}, { immediate: true })
-
-function onSelectTab(item: NavItem) {
-  if (item.to) navigateTo(item.to)
-}
 
 function goBack() {
   if (import.meta.client) {
