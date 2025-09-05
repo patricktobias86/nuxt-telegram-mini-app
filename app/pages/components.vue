@@ -198,10 +198,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { navigateTo } from '#app'
 import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram'
 
-const router = useRouter()
+const route = useRoute()
 const haptic = useHapticFeedback()
 const mini = useMiniApp()
 const theme = useThemeParams()
@@ -217,13 +218,13 @@ const navItems: NavItem[] = [
 ]
 const activeTab = ref('components')
 
-watch(() => router.currentRoute.value.path, (p) => {
+watch(() => route.path, (p) => {
   const match = navItems.find(i => i.to === p)
   if (match) activeTab.value = match.key
 }, { immediate: true })
 
 function onSelectTab(item: NavItem) {
-  if (item.to) router.push(item.to)
+  if (item.to) navigateTo(item.to)
 }
 
 // Interactive state
@@ -320,7 +321,7 @@ onMounted(() => {
   })
 
   onBeforeUnmount(() => {
-    off?.()
+    if (off) off()
   })
 })
 </script>
