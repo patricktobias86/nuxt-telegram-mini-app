@@ -1,7 +1,7 @@
 <template>
   <TgContent>
     <Hero
-      title="Details"
+      title="Functions"
       subtitle="Showcasing components and SDK integrations"
       image-src="/img/hero-user.svg"
     />
@@ -46,7 +46,7 @@ const navItems: NavItem[] = [
   { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
   { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
   { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' },
+  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
 ]
 
 function goBack() {

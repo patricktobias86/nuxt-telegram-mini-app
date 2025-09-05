@@ -8,14 +8,14 @@
 
     <TgSection title="Navigation" inset>
       <TgCell
-        title="Open Details"
+        title="Open Functions"
         subtitle="Navigate with Main Button or fallback"
         icon="i-heroicons-arrow-right-circle-20-solid"
-        to="/details"
+        to="/functions"
       />
 
       <div class="p-4 space-y-2">
-        <TgButton title="Go to Details (fallback)" status="primary" haptic @click="goDetails" />
+        <TgButton title="Go to Functions (fallback)" status="primary" haptic @click="goFunctions" />
         <TgButton title="Toggle Main Button" status="outline" haptic="selection" @click="toggleMain" />
         <p class="text-xs text-hint">In Telegram, tap the Main Button below to navigate.</p>
       </div>
@@ -126,11 +126,11 @@ const navItems: NavItem[] = [
   { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
   { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
   { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' },
+  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
 ]
 
-function goDetails() {
-  navigateTo('/details')
+function goFunctions() {
+  navigateTo('/functions')
 }
 
 function toggleMain() {
@@ -158,20 +158,20 @@ const initQueryId = computed(() => safe(() => init.queryId.value || '—', '—'
 const initStartParam = computed(() => safe(() => init.startParam.value || '—', '—'))
 
 onMounted(async () => {
-  // Configure Main Button to navigate to Details
+  // Configure Main Button to navigate to Functions
   main.mount()
   
   // Simple initialization without complex watchers
   setTimeout(() => {
     try {
-      main.setParams({ is_visible: true, is_active: true, text: 'Open Details' })
+      main.setParams({ is_visible: true, is_active: true, text: 'Open Functions' })
     } catch (e) {
       console.warn('Failed to set main button params:', e)
     }
   }, 500)
   
   const off = main.onClick(() => {
-    goDetails()
+    goFunctions()
   })
   onBeforeUnmount(() => { off?.() })
 

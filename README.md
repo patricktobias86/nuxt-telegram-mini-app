@@ -100,7 +100,7 @@ npm run generate
 │   │   ├── index.vue       # Home page with SDK demo
 │   │   ├── components.vue  # Components showcase
 │   │   ├── utilities.vue   # Utilities demo
-│   │   └── details.vue     # Detail page
+│   │   └── functions.vue     # Functions page
 │   ├── types/              # TypeScript definitions
 │   │   └── telegram-webapp.ts
 │   └── utils/              # Utility functions

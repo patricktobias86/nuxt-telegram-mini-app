@@ -202,7 +202,7 @@ const router = createRouter({
     { path: '/', component: { template: '<div>Home</div>' } },
     { path: '/components', component: { template: '<div>Components</div>' } },
     { path: '/utilities', component: { template: '<div>Utils</div>' } },
-    { path: '/details', component: { template: '<div>Details</div>' } }
+    { path: '/functions', component: { template: '<div>Functions</div>' } }
   ]
 })
 
@@ -217,7 +217,7 @@ describe('Page Components', () => {
         { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
         { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
         { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-        { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' }
+        { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' }
       ]
 
       const wrapper = mount(MockTgNav, {
@@ -234,13 +234,13 @@ describe('Page Components', () => {
       expect(wrapper.text()).toContain('Home')
       expect(wrapper.text()).toContain('Components')
       expect(wrapper.text()).toContain('Utils')
-      expect(wrapper.text()).toContain('Details')
+      expect(wrapper.text()).toContain('Functions')
     })
 
     it('should emit select event when nav item clicked', async () => {
       const navItems = [
         { key: 'home', label: 'Home', to: '/' },
-        { key: 'details', label: 'Details', to: '/details' }
+        { key: 'functions', label: 'Functions', to: '/functions' }
       ]
 
       const wrapper = mount(MockTgNav, {
@@ -250,8 +250,8 @@ describe('Page Components', () => {
         }
       })
 
-      const detailsButton = wrapper.findAll('button')[1]
-      await detailsButton.trigger('click')
+      const functionsButton = wrapper.findAll('button')[1]
+      await functionsButton.trigger('click')
 
       expect(wrapper.emitted('select')).toHaveLength(1)
       expect(wrapper.emitted('select')?.[0]).toEqual([navItems[1]])

@@ -48,7 +48,7 @@
         title="Interactive Cell"
         subtitle="Tap to navigate"
         icon="i-heroicons-arrow-right-circle-20-solid"
-        to="/details"
+        to="/functions"
       />
       <TgCell
         title="Cell with Action"
@@ -212,7 +212,7 @@ const navItems: NavItem[] = [
   { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
   { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
   { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'details', label: 'Details', icon: 'i-heroicons-document-text-20-solid', to: '/details' },
+  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
 ]
 
 // Interactive state

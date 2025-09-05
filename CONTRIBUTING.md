@@ -28,7 +28,7 @@ root/
 │   │   ├── index.vue       # Home page with main demo
 │   │   ├── components.vue  # Components showcase page
 │   │   ├── utilities.vue   # Utilities and tools demo
-│   │   └── details.vue     # Detail page example
+│   │   └── functions.vue     # Functions page example
 │   ├── types/              # TypeScript type definitions
 │   │   └── telegram-webapp.ts # Telegram WebApp types
 │   └── utils/              # Utility functions
