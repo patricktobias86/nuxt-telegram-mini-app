@@ -21,16 +21,29 @@ const props = withDefaults(defineProps<{
   inset?: boolean
   /** Adds a thin top border above the append slot */
   appendBorder?: boolean
+  /** Inner background tone */
+  tone?: 'default' | 'secondary'
+  /** Inner padding of the body (removed: default only) */
   class?: string
 }>(), {
   title: undefined,
   inset: false,
   appendBorder: true,
+  tone: 'default',
   class: '',
 })
 
 const sectionClass = computed(() => [props.inset ? 'px-3' : '', props.class].filter(Boolean).join(' '))
-const bodyClass = computed(() => [props.inset ? 'rounded-2xl overflow-hidden' : 'rounded', 'border border-sectionSeparator'].join(' '))
+
+const roundedClass = computed(() => props.inset ? 'rounded-2xl overflow-hidden' : 'rounded')
+
+const paddingClass = computed(() => '')
+
+const toneClass = computed(() => props.tone === 'secondary' ? 'bg-secondaryBg' : 'bg-bg')
+
+const borderClass = computed(() => '')
+
+const bodyClass = computed(() => [roundedClass.value, borderClass.value, toneClass.value, paddingClass.value].filter(Boolean).join(' '))
 </script>
 
 <style scoped>

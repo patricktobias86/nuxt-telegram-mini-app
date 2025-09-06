@@ -2,7 +2,6 @@
   <TgContent>
     <Hero
       title="Functions"
-      subtitle="Showcasing components and SDK integrations"
       image-src="/img/hero-user.svg"
     />
 
@@ -13,14 +12,28 @@
         icon="i-heroicons-arrow-left-circle-20-solid"
       />
       <div class="p-4">
-        <TgButton title="Go Back (fallback)" haptic @click="goBack" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <TgButton title="Go Back (fallback)" haptic @click="goBack" />
+          <TgButton title="Go to Components" status="outline" to="/components" haptic="selection" />
+        </div>
       </div>
     </TgSection>
 
     <TgSection title="Main Button" inset>
       <TgCell title="Main Button is hidden" subtitle="Using bottom navigation instead" />
       <div class="p-4">
-        <TgButton title="Demo Button" haptic @click="() => {}" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <TgButton title="Demo Button" haptic @click="() => {}" />
+          <TgButton title="Toggle Main Button" status="outline" haptic="selection" @click="toggleMain" />
+        </div>
+      </div>
+    </TgSection>
+
+    <TgSection title="Links & Sharing" inset>
+      <div class="p-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <TgButton title="Open Nuxt" href="https://nuxt.com" haptic />
+        <TgButton title="Open Telegram" haptic @click="() => openTelegramLink('https://t.me/nuxt_tg_demo_bot')" />
+        <TgButton title="Share This Page" :share-url="shareUrl" haptic="notification-success" />
       </div>
     </TgSection>
 
@@ -30,9 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useBackButton, useMainButton } from '~/composables/telegram'
+import { useBackButton, useMainButton, openTelegramLink } from '~/composables/telegram'
 
 const back = useBackButton()
 const main = useMainButton()
@@ -47,6 +60,14 @@ function goBack() {
     try { router.push('/') } catch { /* no-op */ }
   }
 }
+
+function toggleMain() {
+  const visible = !main.visible.value
+  main.setParams({ is_visible: visible })
+}
+
+// SSR-safe current URL for sharing examples
+const shareUrl = computed(() => import.meta.client ? window.location.href : 'https://example.com')
 
 onMounted(() => {
   // Back Button wiring with guarded polling to avoid early store reads

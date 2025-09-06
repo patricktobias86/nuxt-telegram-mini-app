@@ -14,7 +14,7 @@
         <slot name="description">{{ description }}</slot>
       </div>
     </div>
-    <Icon v-if="isLink" name="i-heroicons-chevron-right-20-solid" class="h-5 w-5 text-hint" />
+    <Icon v-if="showChevron" name="i-heroicons-chevron-right-20-solid" class="h-5 w-5 text-hint" />
   </component>
 </template>
 
@@ -37,6 +37,12 @@ const props = withDefaults(defineProps<{
   to?: string
   /** External link; renders an anchor when set */
   href?: string
+  /** Background tone */
+  tone?: 'default' | 'secondary'
+  /** Force interactive hover state even without link */
+  clickable?: boolean
+  /** Show chevron; defaults to auto when link */
+  chevron?: boolean
   class?: string
 }>(), {
   title: '',
@@ -49,6 +55,9 @@ const props = withDefaults(defineProps<{
   border: true,
   to: undefined,
   href: undefined,
+  tone: 'default',
+  clickable: false,
+  chevron: undefined,
   class: '',
 })
 
@@ -65,10 +74,15 @@ const titleStyle = computed(() => ({ ...(props.color ? { color: props.color } : 
 const descStyle = computed(() => clampStyle.value)
 const iconStyle = computed(() => props.iconColor ? { color: props.iconColor } : {})
 
+const bgClass = computed(() => props.tone === 'secondary' ? 'bg-secondaryBg' : 'bg-bg')
+
+const showChevron = computed(() => props.chevron ?? isLink.value)
+
 const rootClass = computed(() => [
-  'w-full flex items-center gap-3 px-4 py-3 bg-bg',
+  'w-full flex items-center gap-3 px-4 py-3',
+  bgClass.value,
   props.border ? 'border-b border-sectionSeparator last:border-b-0' : '',
-  isLink.value ? 'hover:bg-secondaryBg transition-colors' : '',
+  (isLink.value || props.clickable) ? 'hover:bg-secondaryBg transition-colors' : '',
   props.class,
 ].filter(Boolean).join(' '))
 </script>

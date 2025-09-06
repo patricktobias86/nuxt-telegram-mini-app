@@ -227,6 +227,13 @@ npm run generate
 
 2. **Deploy the `dist` folder** to your hosting provider
 
+### Netlify (SPA routing)
+
+- This project uses Vue Router history mode to preserve Telegram's `#tgWebAppData` hash.
+- Netlify requires a SPA redirect so deep links resolve to `index.html`.
+- Included file: `public/_redirects` with `/* /index.html 200`.
+- If you deploy elsewhere, add an equivalent history fallback rule.
+
 ### Environment Variables
 
 Set these in your deployment platform:
@@ -325,16 +332,47 @@ export default {
 ### Components
 
 #### `<TgButton>`
+Props-driven styling so you don’t need extra Tailwind classes.
+
 ```vue
 <TgButton
-  title="Button Text"
-  status="primary|secondary|outline|destructive"
-  haptic="impact-light|impact-medium|impact-heavy|notification-success|notification-warning|notification-error|selection"
-  :disabled="false"
+  title="Label"
+  status="primary|secondary|outline|danger|destructive"
+  size="sm|md|lg"
+  :block="true"
   :loading="false"
+  :disabled="false"
+  icon="i-heroicons-star-20-solid"
+  icon-position="left|right"
+  elevated
+  uppercase
+  haptic="selection|impact-light|impact-medium|impact-heavy|notification-success|notification-warning|notification-error"
   @click="handleClick"
 />
 ```
+
+TgButton props
+
+| Prop | Required | Default | Description |
+| --- | --- | --- | --- |
+| `title` | yes | — | Button label text |
+| `status` | no | `primary` | Visual style variant |
+| `size` | no | `md` | Size of the button |
+| `block` | no | `true` | Full width when true |
+| `loading` | no | `false` | Shows spinner and disables |
+| `disabled` | no | `false` | Disables interaction |
+| `icon` | no | — | Icon name for `@nuxt/icon` |
+| `icon-position` | no | `left` | Icon placement relative to text |
+| `elevated` | no | `false` | Adds a subtle shadow |
+| `uppercase` | no | `false` | Uppercase label |
+| `to` | no | — | Internal route, uses `NuxtLink` |
+| `href` | no | — | External link, uses `<a>` |
+| `share-url` | no | — | Triggers Telegram share on click |
+| `haptic` | no | `false` | Haptic feedback type or boolean |
+
+Notes:
+- Prefer `to` (router) for internal navigation to avoid conflicts with bottom Nav.
+- `small` is still supported but `size` is preferred.
 
 #### `<TgCell>`
 ```vue
@@ -342,23 +380,101 @@ export default {
   title="Cell Title"
   subtitle="Cell Subtitle"
   :description="dynamicDescription"
-  icon="heroicons-icon-name"
-  to="/navigation-target"
+  icon="i-heroicons-star-20-solid"
+  color="var(--tg-theme-link-color)"
+  icon-color="#888"
+  tone="default|secondary"
   :border="true"
+  :clickable="false"    
+  :chevron="undefined|true|false"  
+  to="/navigation-target"         
+  href="https://example.com"
   @click="handleClick"
 />
 ```
+
+TgCell props
+
+| Prop | Required | Default | Description |
+| --- | --- | --- | --- |
+| `title` | no | `''` | Title text |
+| `subtitle` | no | — | Subtitle text |
+| `description` | no | — | Description text |
+| `icon` | no | — | Icon name for `@nuxt/icon` |
+| `color` | no | — | Title color override |
+| `icon-color` | no | — | Icon color override |
+| `line-clamp` | no | `0` | Clamp lines for text (0 = none) |
+| `border` | no | `true` | Bottom divider line |
+| `tone` | no | `default` | Background tone |
+| `clickable` | no | `false` | Hover style even without link |
+| `chevron` | no | `auto` | Force chevron visibility |
+| `to` | no | — | Internal route, uses `NuxtLink` |
+| `href` | no | — | External link, uses `<a>` |
+
+#### `<TgContent>`
+```vue
+<TgContent as="main|section|div" />
+```
+
+Behavior
+
+- Automatically adds bottom safe-area padding when a `<TgNav>` exists on the page.
+- Default container styles: `max-w-2xl`, `p-4`, and `space-y-6`.
+
+TgContent props
+
+| Prop | Required | Default | Description |
+| --- | --- | --- | --- |
+| `as` | no | `main` | Render element |
+| `max-width-class` | no | — | Optional override for container max width |
+| `class` | no | `''` | Extra classes to merge |
+
+#### `<TgSection>`
+```vue
+<TgSection title="Section" inset tone="default|secondary" :append-border="true" />
+```
+
+Behavior
+
+- Rounded corners by default; larger rounding when `inset`.
+- No outer border around the body.
+
+TgSection props
+
+| Prop | Required | Default | Description |
+| --- | --- | --- | --- |
+| `title` | no | — | Optional section header |
+| `inset` | no | `false` | Indented, iOS-like style |
+| `tone` | no | `default` | Background tone for body |
+| `append-border` | no | `true` | Thin border above append slot |
+| `class` | no | `''` | Extra classes on wrapper |
 
 #### `<TgNav>`
 ```vue
 <TgNav
   :items="navItems"
   :model-value="activeKey"
+  tone="default|secondary"
+  :border="true"
+  height="12|14"
+  :safe-area="true"
   root-class="custom-nav-class"
   @select="handleSelect"
   @update:model-value="handleActiveChange"
 />
 ```
+
+TgNav props
+
+| Prop | Required | Default | Description |
+| --- | --- | --- | --- |
+| `items` | yes | — | List of items `{ key, label, icon?, to? }` |
+| `model-value` | no | — | Controlled active key |
+| `tone` | no | `default` | Background tone |
+| `border` | no | `true` | Top border visibility |
+| `height` | no | `14` | Item height (Tailwind number) |
+| `safe-area` | no | `true` | Adds bottom safe area spacer |
+| `root-class` | no | `''` | Extra classes on root nav |
 
 Navigation items structure:
 ```ts
@@ -370,6 +486,11 @@ interface TgNavItem {
 }
 ```
 
+Routing guidance
+
+- Use `to` (router) for internal navigation to avoid conflicts with the fixed `<TgNav>`.
+- Reserve `href` for external links.
+
 ## 🔧 Configuration
 
 ### Nuxt Configuration
@@ -380,6 +501,12 @@ Key settings in `nuxt.config.ts`:
 export default defineNuxtConfig({
   ssr: false,              // SPA mode for Telegram
   srcDir: 'app',           // App source directory
+  router: {
+    options: {
+      // Use history mode so Telegram's #tgWebAppData is not rewritten to a route
+      hashMode: false
+    }
+  },
   modules: [
     '@nuxt/icon',          // Icon support
     '@nuxtjs/tailwindcss', // Tailwind CSS

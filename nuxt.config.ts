@@ -34,7 +34,8 @@ export default defineNuxtConfig({
   pages: true,
   router: {
     options: {
-      hashMode: true
+      // Use history mode so Telegram's #tgWebAppData is preserved as a URL hash
+      hashMode: false
     }
   },
   nitro: {
@@ -49,5 +50,5 @@ export default defineNuxtConfig({
     payloadExtraction: false
   },
   css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss'],
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxt/eslint'],
 })

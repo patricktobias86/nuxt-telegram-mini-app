@@ -3,7 +3,7 @@
     <Hero
       title="Telegram Mini App Demo"
       subtitle="Showcasing components and SDK integrations"
-      image-src="/img/hero-user.svg"
+      image-src="/img/nuxt-logo.svg"
     />
 
     <TgSection title="Navigation" inset>
@@ -88,9 +88,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { toHex } from '~/utils/color'
-import { useRequestURL, navigateTo } from '#app'
+import { useRequestURL } from '#app'
 import {
   useHapticFeedback,
   useInitData,
@@ -119,7 +119,7 @@ function toggleMain() {
 }
 
 // Guarded access helpers to avoid early SDK store reads
-const safe = <T>(fn: () => T, fallback: T): T => {
+const safe = function <T>(fn: () => T, fallback: T): T {
   try { return fn() } catch { return fallback }
 }
 
@@ -152,7 +152,9 @@ onMounted(async () => {
   // Try restore init data if not present yet (fallback for some environments)
   try {
     if (!init.state.value) init.restore()
-  } catch {}
+  } catch {
+    // Ignore restore errors - this is a fallback mechanism
+  }
 })
 
 // Fallbacks for Theme Params and Viewport displays
@@ -181,14 +183,22 @@ const viewportHeight = computed(() => String(safe(() => viewport.height.value, u
 const viewportStableHeight = computed(() => String(safe(() => viewport.stableHeight.value, undefined) ?? (import.meta.client ? window.innerHeight : '—')))
 
 function onRequestFullscreen() {
-  try { viewport.requestFullscreen() } catch {}
+  try { 
+    viewport.requestFullscreen() 
+  } catch {
+    // Ignore viewport fullscreen errors - fallback to browser API
+  }
   if (import.meta.client && document.fullscreenEnabled && !document.fullscreenElement) {
     document.documentElement.requestFullscreen?.().catch(() => {})
   }
 }
 
 function onExitFullscreen() {
-  try { viewport.exitFullscreen() } catch {}
+  try { 
+    viewport.exitFullscreen() 
+  } catch {
+    // Ignore viewport fullscreen errors - fallback to browser API
+  }
   if (import.meta.client && document.fullscreenElement) {
     document.exitFullscreen?.().catch(() => {})
   }

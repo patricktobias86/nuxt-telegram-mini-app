@@ -57,6 +57,18 @@
         @click="onCellClick"
         :border="false"
       />
+      <TgCell
+        title="Router Link Cell"
+        subtitle="Navigates using NuxtLink"
+        icon="i-heroicons-chevron-right-20-solid"
+        to="/"
+      />
+      <TgCell
+        title="External Link Cell"
+        subtitle="Opens external URL"
+        icon="i-heroicons-arrow-top-right-on-square-20-solid"
+        href="https://nuxt.com"
+      />
     </TgSection>
 
     <TgSection title="Color Showcase" inset>
@@ -66,7 +78,7 @@
           <div class="grid grid-cols-2 gap-3">
             <div v-for="color in themeColors" :key="color.name" class="flex items-center gap-2">
               <div 
-                class="w-4 h-4 rounded border border-section-separator"
+                class="w-4 h-4 rounded border border-sectionSeparator"
                 :style="{ backgroundColor: color.value }"
               />
               <span class="text-xs">{{ color.name }}</span>
@@ -80,7 +92,7 @@
             <button
               v-for="colorOption in backgroundColors"
               :key="colorOption.name"
-              class="px-3 py-1 text-xs rounded border border-section-separator"
+              class="px-3 py-1 text-xs rounded border border-sectionSeparator"
               :style="{ backgroundColor: colorOption.value, color: colorOption.textColor }"
               @click="changeBackgroundColor(colorOption.value)"
             >
@@ -100,13 +112,13 @@
               v-model="textInput"
               type="text"
               placeholder="Enter text here..."
-              class="w-full px-3 py-2 bg-secondary-bg border border-section-separator rounded-lg text-text placeholder-hint"
+              class="w-full px-3 py-2 bg-secondaryBg border border-sectionSeparator rounded-lg text-text placeholder-hint"
             />
             <textarea
               v-model="textareaInput"
               rows="3"
               placeholder="Multi-line input..."
-              class="w-full px-3 py-2 bg-secondary-bg border border-section-separator rounded-lg text-text placeholder-hint resize-none"
+              class="w-full px-3 py-2 bg-secondaryBg border border-sectionSeparator rounded-lg text-text placeholder-hint resize-none"
             />
           </div>
         </div>
@@ -136,7 +148,7 @@
                 <span>Progress</span>
                 <span>{{ progress }}%</span>
               </div>
-              <div class="w-full h-2 bg-secondary-bg rounded-full overflow-hidden">
+              <div class="w-full h-2 bg-secondaryBg rounded-full overflow-hidden">
                 <div
                   class="h-full bg-link transition-all duration-300"
                   :style="{ width: `${progress}%` }"
