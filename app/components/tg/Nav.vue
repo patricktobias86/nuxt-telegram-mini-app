@@ -5,7 +5,7 @@
     :class="[rootClass]"
     role="tablist"
   >
-    <ul class="mx-auto grid max-w-2xl" :style="gridStyle">
+    <ul class="mx-auto p-2 grid max-w-2xl" :style="gridStyle">
       <li v-for="item in items" :key="item.key">
         <NuxtLink
           v-if="item.to"

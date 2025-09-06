@@ -31,7 +31,7 @@ onMounted(() => {
 })
 
 const rootClasses = computed(() => [
-  'mx-auto text-text p-4 space-y-6',
+  'mx-auto text-text space-y-6',
   maxWidthClass.value,
   hasNav.value ? 'pb-[calc(56px+var(--safe-area-inset-bottom))]' : '',
   props.class,

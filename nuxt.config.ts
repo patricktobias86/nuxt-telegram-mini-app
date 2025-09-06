@@ -50,5 +50,5 @@ export default defineNuxtConfig({
     payloadExtraction: false
   },
   css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxt/eslint'],
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxt/eslint', '@nuxt/fonts'],
 })

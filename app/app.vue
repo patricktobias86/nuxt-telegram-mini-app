@@ -8,7 +8,7 @@
       <NuxtPage />
     </ErrorBoundary>
 
-    <TgNav :items="navItems" />
+    <TgNav :safe-area="true" :items="navItems" />
   </div>
 </template>
 
@@ -18,7 +18,7 @@ import type { TgNavItem } from '~/components/tg/Nav.vue'
 
 // Check if we're in development mode for showing error details
 const isDev = computed(() => {
-  return process.dev || (typeof window !== 'undefined' && window.location.hostname === 'localhost')
+  return import.meta.dev || (typeof window !== 'undefined' && window.location.hostname === 'localhost')
 })
 
 // Navigation items for the bottom nav

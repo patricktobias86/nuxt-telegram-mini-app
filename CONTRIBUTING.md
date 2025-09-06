@@ -259,7 +259,6 @@ onMounted(() => {
 ```typescript
 // Component test example
 import { mount } from '@vue/test-utils'
-import TgButton from '~/components/tg/Button.vue'
 
 describe('TgButton', () => {
   it('renders with correct props', () => {
@@ -324,7 +323,7 @@ describe('TgButton', () => {
 
 1. **TypeScript**: Use strict typing, avoid `any`
 2. **Vue 3**: Use Composition API with `<script setup>`
-3. **Formatting**: Use ESLint/Prettier (configure as needed)
+3. **Formatting**: Use ESLint
 4. **Naming**: Use descriptive names, follow Vue conventions
 5. **Comments**: Document complex logic and Telegram-specific behavior
 
@@ -347,7 +346,7 @@ The template is configured for zero-config Netlify deployment:
 
 ### Manual Deployment
 
-1. Build the project: `npm run build`
+1. Build the project: `npm run generate`
 2. Deploy the `dist` folder to your hosting provider
 3. Configure redirects for SPA routing
 
