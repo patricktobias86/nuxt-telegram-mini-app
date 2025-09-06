@@ -18,45 +18,34 @@
     </TgSection>
 
     <TgSection title="Main Button" inset>
-      <TgCell title="Configured to return Home" />
+      <TgCell title="Main Button is hidden" subtitle="Using bottom navigation instead" />
       <div class="p-4">
-        <TgButton title="Go Home (fallback)" haptic @click="goHome" />
+        <TgButton title="Demo Button" haptic @click="() => {}" />
       </div>
     </TgSection>
 
     <div class="h-2" />
   </TgContent>
 
-  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { navigateTo } from '#app'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useBackButton, useMainButton } from '~/composables/telegram'
 
-const route = useRoute()
 const back = useBackButton()
 const main = useMainButton()
-
-// Bottom Nav wiring
-type NavItem = { key: string; label: string; icon?: string; to?: string }
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
-  { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
-  { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
-]
+const router = useRouter()
 
 function goBack() {
-  if (import.meta.client) {
-    window.history.back()
+  if (!import.meta.client) return
+  // Prefer router navigation to play nicely with Nuxt links/TgNav
+  if (window.history.length > 1) {
+    try { router.back() } catch { /* fallback below */ }
+  } else {
+    try { router.push('/') } catch { /* no-op */ }
   }
-}
-
-function goHome() {
-  navigateTo('/', { replace: true })
 }
 
 onMounted(() => {
@@ -71,23 +60,24 @@ onMounted(() => {
       }
     } catch {}
   }, 50)
-  const offBack = back.onClick(() => { goBack() })
+  // Register back handler and properly unregister on unmount
+  const backHandler = () => { goBack() }
+  back.onClick(backHandler)
 
-  // Main Button wiring with guarded polling
+  // Hide Main Button since we're using TgNav for navigation
   main.mount()
   const pollMain = setInterval(() => {
     try {
       if (main.mounted.value) {
-        main.setParams({ is_visible: true, is_active: true, text: 'Go Home' })
+        main.setParams({ is_visible: false })
         clearInterval(pollMain)
       }
     } catch {}
   }, 50)
-  const offMain = main.onClick(() => { goHome() })
 
   onBeforeUnmount(() => {
-    offBack?.()
-    offMain?.()
+    try { back.offClick(backHandler) } catch {}
+    try { back.hide() } catch {}
   })
 })
 </script>

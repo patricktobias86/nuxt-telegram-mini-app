@@ -258,12 +258,10 @@
     <div class="h-2"></div>
   </TgContent>
 
-  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
 import { useRequestURL, navigateTo } from '#app'
 import {
   useInitData,
@@ -276,20 +274,10 @@ import {
 } from '~/composables/telegram'
 import { toHex } from '~/utils/color'
 
-const route = useRoute()
 const init = useInitData()
 const theme = useThemeParams()
 const viewport = useViewport()
 const main = useMainButton()
-
-// Navigation
-type NavItem = { key: string; label: string; icon?: string; to?: string }
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
-  { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
-  { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
-]
 
 // Sharing
 const reqURL = useRequestURL()
@@ -396,7 +384,7 @@ function clearStorage() {
   storageValue.value = 'Hello World'
 }
 
-// Main button setup
+// Hide Main Button since we're using TgNav for navigation
 onMounted(() => {
   renderCount.value++
   loadAllStoredData()
@@ -405,45 +393,10 @@ onMounted(() => {
   
   setTimeout(() => {
     try {
-      main.setParams({
-        is_visible: true,
-        is_active: true,
-        text: 'Utility Actions'
-      })
+      main.setParams({ is_visible: false })
     } catch (e) {
-      console.warn('Failed to set main button params:', e)
+      console.warn('Failed to hide main button:', e)
     }
   }, 500)
-
-  const off = main.onClick(() => {
-    // Cycle through utility actions
-    const actions = [
-      () => {
-        testColor.value = '#' + Math.floor(Math.random()*16777215).toString(16)
-        main.setParams({ text: 'Random Color ✓' })
-      },
-      () => {
-        forceRerender()
-        main.setParams({ text: 'Re-render ✓' })
-      },
-      () => {
-        if (import.meta.client) {
-          const url = window.location.href
-          shareURL(url)
-        }
-        main.setParams({ text: 'Shared ✓' })
-      },
-      () => {
-        main.setParams({ text: 'Utility Actions' })
-      }
-    ]
-    
-    const actionIndex = renderCount.value % actions.length
-    actions[actionIndex]()
-  })
-
-  onBeforeUnmount(() => {
-    off?.()
-  })
 })
 </script>

@@ -21,7 +21,7 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, Ty
 - **TgButton** - Telegram-styled buttons with haptic feedback
 - **TgCell** - List cells with navigation and interaction support
 - **TgContent** - Main content wrapper with proper spacing
-- **TgNav** - Bottom navigation bar
+- **TgNav** - Bottom navigation bar with up to 4 menu options and icons
 - **TgSection** - Content sections with proper styling
 - **Hero** - Header component for pages
 
@@ -139,8 +139,6 @@ npm run generate
       />
     </TgSection>
   </TgContent>
-
-  <TgNav v-model="activeTab" :items="navItems" @select="onSelectTab" />
 </template>
 
 <script setup lang="ts">
@@ -148,21 +146,9 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const activeTab = ref('my-page')
-
-type NavItem = { key: string; label: string; icon?: string; to?: string }
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
-  { key: 'my-page', label: 'My Page', icon: 'i-heroicons-star-20-solid', to: '/my-page' },
-]
-
-function onSelectTab(item: NavItem) {
-  if (item.to) router.push(item.to)
-}
+const goHome = () => router.push('/')
 </script>
 ```
-
-2. **Add navigation** to other pages by updating their `navItems` array.
 
 ### Using Telegram SDK Features
 
@@ -231,12 +217,6 @@ The template includes pre-built Telegram-styled components:
 ```
 
 ## 🚀 Deployment
-
-### Deploy to Netlify
-
-1. **Connect your repository** to Netlify
-2. **Build settings** are pre-configured in `netlify.toml`
-3. **Deploy** - Netlify will automatically build and deploy
 
 ### Manual Deployment
 
@@ -369,6 +349,27 @@ export default {
 />
 ```
 
+#### `<TgNav>`
+```vue
+<TgNav
+  :items="navItems"
+  :model-value="activeKey"
+  root-class="custom-nav-class"
+  @select="handleSelect"
+  @update:model-value="handleActiveChange"
+/>
+```
+
+Navigation items structure:
+```ts
+interface TgNavItem {
+  key: string        // Unique identifier
+  label: string      // Display text
+  icon?: string      // Icon name (optional)
+  to?: string        // Route path (optional)
+}
+```
+
 ## 🔧 Configuration
 
 ### Nuxt Configuration
@@ -382,7 +383,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/icon',          // Icon support
     '@nuxtjs/tailwindcss', // Tailwind CSS
-    '@netlify/nuxt'        // Netlify deployment
   ],
   app: {
     head: {

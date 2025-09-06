@@ -8,16 +8,15 @@
 
     <TgSection title="Navigation" inset>
       <TgCell
-        title="Open Functions"
-        subtitle="Navigate with Main Button or fallback"
+        title="Navigation Demo"
+        subtitle="Use the bottom navigation bar to navigate"
         icon="i-heroicons-arrow-right-circle-20-solid"
-        to="/functions"
       />
 
       <div class="p-4 space-y-2">
-        <TgButton title="Go to Functions (fallback)" status="primary" haptic @click="goFunctions" />
+        <TgButton title="Demo Button" status="primary" haptic @click="() => haptic.impactOccurred('medium')" />
         <TgButton title="Toggle Main Button" status="outline" haptic="selection" @click="toggleMain" />
-        <p class="text-xs text-hint">In Telegram, tap the Main Button below to navigate.</p>
+        <p class="text-xs text-hint">Use the navigation bar at the bottom to switch between pages.</p>
       </div>
     </TgSection>
 
@@ -86,17 +85,13 @@
 
     <div class="h-2" />
   </TgContent>
-
-  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch, computed } from 'vue'
 import { toHex } from '~/utils/color'
 import { useRequestURL, navigateTo } from '#app'
-import { useRoute } from 'vue-router'
 import {
-  useBackButton,
   useHapticFeedback,
   useInitData,
   useMainButton,
@@ -105,11 +100,8 @@ import {
   useViewport,
   openLink,
   openTelegramLink,
-  shareURL,
 } from '~/composables/telegram'
 
-const route = useRoute()
-const back = useBackButton()
 const main = useMainButton()
 const haptic = useHapticFeedback()
 const init = useInitData()
@@ -120,18 +112,6 @@ const viewport = useViewport()
 // SSR-safe current URL for sharing
 const reqURL = useRequestURL()
 const shareUrl = computed(() => import.meta.client ? window.location.href : reqURL.href)
-// Bottom Nav wiring
-type NavItem = { key: string; label: string; icon?: string; to?: string }
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
-  { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
-  { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
-]
-
-function goFunctions() {
-  navigateTo('/functions')
-}
 
 function toggleMain() {
   const visible = !main.visible.value
@@ -158,30 +138,22 @@ const initQueryId = computed(() => safe(() => init.queryId.value || '—', '—'
 const initStartParam = computed(() => safe(() => init.startParam.value || '—', '—'))
 
 onMounted(async () => {
-  // Configure Main Button to navigate to Functions
+  // Hide Main Button since we're using TgNav for navigation
   main.mount()
   
-  // Simple initialization without complex watchers
   setTimeout(() => {
     try {
-      main.setParams({ is_visible: true, is_active: true, text: 'Open Functions' })
+      main.setParams({ is_visible: false })
     } catch (e) {
-      console.warn('Failed to set main button params:', e)
+      console.warn('Failed to hide main button:', e)
     }
   }, 500)
-  
-  const off = main.onClick(() => {
-    goFunctions()
-  })
-  onBeforeUnmount(() => { off?.() })
 
   // Try restore init data if not present yet (fallback for some environments)
   try {
     if (!init.state.value) init.restore()
   } catch {}
 })
-
-// Color formatting utilities moved to '~/utils/color'
 
 // Fallbacks for Theme Params and Viewport displays
 const themeBgHex = computed(() => {

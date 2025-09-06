@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: '2025-09-06',
   srcDir: 'app',
   devtools: {
     enabled: true,
@@ -26,16 +26,17 @@ export default defineNuxtConfig({
       ],
       script: [
         {
-          src: 'https://telegram.org/js/telegram-web-app.js?58',
-          defer: true
+          src: 'https://telegram.org/js/telegram-web-app.js?58'
         }
       ]
     },
   },
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@netlify/nuxt'],
-  // Explicitly enable file-based routing via pages/
   pages: true,
-  css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
+  router: {
+    options: {
+      hashMode: true
+    }
+  },
   nitro: {
     prerender: {
       crawlLinks: true,
@@ -43,8 +44,10 @@ export default defineNuxtConfig({
       failOnError: false,
     },
   },
-  // Additional SPA configuration
+ // Additional SPA configuration
   experimental: {
     payloadExtraction: false
   },
+  css: ['~/assets/css/tailwind.css', '~/assets/css/main.css'],
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss'],
 })

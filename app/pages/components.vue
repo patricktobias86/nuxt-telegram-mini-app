@@ -46,9 +46,9 @@
       />
       <TgCell
         title="Interactive Cell"
-        subtitle="Tap to navigate"
+        subtitle="Demo cell (no navigation)"
         icon="i-heroicons-arrow-right-circle-20-solid"
-        to="/functions"
+        @click="onCellClick"
       />
       <TgCell
         title="Cell with Action"
@@ -192,28 +192,16 @@
     <div class="h-2" />
   </TgContent>
 
-  <TgNav :items="navItems" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
-import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram.ts'
+import { useHapticFeedback, useMiniApp, useThemeParams, useMainButton } from '~/composables/telegram'
 
-const route = useRoute()
 const haptic = useHapticFeedback()
 const mini = useMiniApp()
 const theme = useThemeParams()
 const main = useMainButton()
-
-// Navigation
-type NavItem = { key: string; label: string; icon?: string; to?: string }
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', icon: 'i-heroicons-home-20-solid', to: '/' },
-  { key: 'components', label: 'Components', icon: 'i-heroicons-squares-2x2-20-solid', to: '/components' },
-  { key: 'utilities', label: 'Utils', icon: 'i-heroicons-wrench-screwdriver-20-solid', to: '/utilities' },
-  { key: 'functions', label: 'Functions', icon: 'i-heroicons-document-text-20-solid', to: '/functions' },
-]
 
 // Interactive state
 const loadingButton = ref(false)
@@ -264,52 +252,16 @@ function changeBackgroundColor(color: string) {
   haptic.selectionChanged()
 }
 
-// Main button setup
+// Hide Main Button since we're using TgNav for navigation
 onMounted(() => {
   main.mount()
   
   setTimeout(() => {
     try {
-      main.setParams({
-        is_visible: true,
-        is_active: true,
-        text: 'Demo Actions'
-      })
+      main.setParams({ is_visible: false })
     } catch (e) {
-      console.warn('Failed to set main button params:', e)
+      console.warn('Failed to hide main button:', e)
     }
   }, 500)
-
-  const off = main.onClick(() => {
-    // Cycle through different actions
-    const actions = [
-      () => {
-        counter.value = 0
-        main.setParams({ text: 'Reset Counter ✓' })
-        haptic.notificationOccurred('success')
-      },
-      () => {
-        counter.value += 10
-        main.setParams({ text: 'Add 10 ✓' })
-        haptic.impactOccurred('medium')
-      },
-      () => {
-        textInput.value = 'Hello from Main Button!'
-        main.setParams({ text: 'Set Text ✓' })
-        haptic.selectionChanged()
-      },
-      () => {
-        main.setParams({ text: 'Demo Actions' })
-        haptic.impactOccurred('light')
-      }
-    ]
-    
-    const actionIndex = counter.value % actions.length
-    actions[actionIndex]()
-  })
-
-  onBeforeUnmount(() => {
-    off?.()
-  })
 })
 </script>
