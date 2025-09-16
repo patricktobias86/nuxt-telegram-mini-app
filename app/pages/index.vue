@@ -12,12 +12,14 @@
         subtitle="Use the bottom navigation bar to navigate"
         icon="i-heroicons-arrow-right-circle-20-solid"
       />
-
-      <div class="p-4 space-y-2">
         <TgButton title="Demo Button" status="primary" haptic @click="() => haptic.impactOccurred('medium')" />
-        <TgButton title="Toggle Main Button" status="outline" haptic="selection" @click="toggleMain" />
-        <p class="text-xs text-hint">Use the navigation bar at the bottom to switch between pages.</p>
-      </div>
+        <TgButton title="Toggle Main Button" status="primary" haptic="selection" @click="toggleMain" />
+        <TgCell
+        title="Example Cell without icon"
+      />
+        <template #append>
+        Use the navigation bar at the bottom to switch between pages.
+        </template>
     </TgSection>
 
     <TgSection title="Haptic Feedback" inset>

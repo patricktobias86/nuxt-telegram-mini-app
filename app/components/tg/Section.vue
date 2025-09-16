@@ -1,12 +1,12 @@
 <template>
   <section :class="sectionClass">
-    <header v-if="title" class="px-4 pt-4 pb-2">
-      <h2 class="text-[13px] font-semibold tracking-wide text-accent uppercase">{{ title }}</h2>
+    <header v-if="title" :class="inset ? 'px-4' : 'last:pb-0'">
+      <h2 class="px-3 text-sm uppercase mb-1.5" :style="{ color: 'var(--tg-theme-section-header-text-color)' }">{{ title }}</h2>
     </header>
-    <div class="bg-bg" :class="bodyClass">
+    <div class="bg-bg" :class="bodyClass" :style="{ backgroundColor: 'var(--tg-theme-section-bg-color)' }">
       <slot />
     </div>
-    <footer v-if="$slots.append" class="px-4 py-3 text-[13px] text-hint" :class="appendBorder ? 'border-t border-sectionSeparator' : ''">
+    <footer v-if="$slots.append" class="pt-2 px-5 text-xs text-hint" :class="appendBorder ? 'border-t border-sectionSeparator' : ''">
       <slot name="append" />
     </footer>
   </section>

@@ -3,7 +3,7 @@
     <div v-if="icon" class="shrink-0 h-6 w-6 flex items-center justify-center">
       <Icon :name="icon" class="h-5 w-5" :style="iconStyle" />
     </div>
-    <div class="min-w-0 flex-1">
+    <div class="min-w-0 min-h-6 flex-1">
       <div class="text-sm font-medium" :style="titleStyle">
         <slot name="title">{{ title }}</slot>
       </div>
