@@ -226,18 +226,15 @@ Nuxt Layers provide a way to extend and customize Nuxt applications by sharing c
 
 ### Using This Template as a Layer
 
-To use this Telegram Mini App template as a layer in another Nuxt project:
+To use this Telegram Mini App template as a layer in another Nuxt project, install it as an NPM package:
 
-1. **Clone or reference the layer**:
+1. **Install the NPM package**:
    ```bash
-   # Option 1: Clone as a subdirectory
-   git clone https://github.com/patricktobias86/nuxt-telegram-mini-app.git layers/telegram-app
-
-   # Option 2: Add as git dependency (recommended for teams)
-   # In your project's package.json:
-   # "dependencies": {
-   #   "nuxt-telegram-mini-app": "github:patricktobias86/nuxt-telegram-mini-app"
-   # }
+   npm install nuxt-telegram-mini-app
+   # or
+   yarn add nuxt-telegram-mini-app
+   # or
+   pnpm add nuxt-telegram-mini-app
    ```
 
 2. **Configure your Nuxt project** to extend this layer:
@@ -245,10 +242,30 @@ To use this Telegram Mini App template as a layer in another Nuxt project:
    // nuxt.config.ts
    export default defineNuxtConfig({
      extends: [
-       // Local path
-       './layers/telegram-app',
-       // Or npm package
-       // 'nuxt-telegram-mini-app'
+       'nuxt-telegram-mini-app'
+     ],
+     // Your custom config here
+   })
+   ```
+
+   Alternatively, if you prefer to use a local clone or git dependency:
+   ```bash
+   # Clone as a subdirectory
+   git clone https://github.com/patricktobias86/nuxt-telegram-mini-app.git layers/telegram-app
+
+   # Or add as git dependency in package.json:
+   # "dependencies": {
+   #   "nuxt-telegram-mini-app": "github:patricktobias86/nuxt-telegram-mini-app"
+   # }
+   ```
+
+   Then configure:
+   ```ts
+   // nuxt.config.ts
+   export default defineNuxtConfig({
+     extends: [
+       './layers/telegram-app'
+       // or 'nuxt-telegram-mini-app' for git dependency
      ],
      // Your custom config here
    })

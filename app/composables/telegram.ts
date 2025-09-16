@@ -1,9 +1,7 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import type { 
-  TelegramWebApp, 
-  TelegramWebAppUser, 
-  TelegramWebAppInitData, 
-  TelegramWebAppThemeParams 
+import { ref, computed, onMounted } from 'vue'
+import type {
+  TelegramWebApp,
+  TelegramWebAppInitData
 } from '~/types/telegram-webapp'
 
 // Helper to get WebApp instance
@@ -322,8 +320,17 @@ export function openTelegramLink(url: string) {
 export function shareURL(url: string) {
   const webApp = getWebApp()
   if (webApp) {
-    // Use switchInlineQuery for sharing
-    webApp.switchInlineQuery(url)
+    // Use Web Share API if available, otherwise copy to clipboard
+    if (navigator.share) {
+      navigator.share({ url }).catch(() => {
+        // Fallback to clipboard if share fails
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(url)
+        }
+      })
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url)
+    }
   } else {
     // Fallback to navigator.share or clipboard
     if (navigator.share) {

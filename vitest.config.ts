@@ -4,7 +4,7 @@ import { resolve } from 'path'
 export default defineConfig({
   test: {
     environment: 'happy-dom',
-    include: ['src/tests/**/*.spec.ts'],
+    include: ['tests/**/*.spec.ts'],
     globals: true
   },
   resolve: {

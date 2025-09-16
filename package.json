@@ -12,6 +12,14 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patricktobias86/nuxt-telegram-mini-app.git"
+  },
+  "author": {
+    "name": "Patrick Tobias",
+    "url": "https://github.com/patricktobias86"
+  },
   "dependencies": {
     "@nuxt/eslint": "^1.9.0",
     "@nuxt/fonts": "^0.11.4",
@@ -30,5 +38,9 @@
     "jsdom": "^26.1.0",
     "typescript": "^5.4.5",
     "vitest": "^3.2.4"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+    }
 }
