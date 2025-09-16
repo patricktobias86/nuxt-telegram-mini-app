@@ -216,6 +216,80 @@ The template includes pre-built Telegram-styled components:
 </TgSection>
 ```
 
+## 🧩 Using as a Nuxt Layer
+
+This template is compatible with Nuxt Layers, allowing you to use it as a reusable layer in other Nuxt projects or extend it with additional layers.
+
+### What are Nuxt Layers?
+
+Nuxt Layers provide a way to extend and customize Nuxt applications by sharing configurations, components, pages, composables, and more across multiple projects. Layers can be local directories or published npm packages.
+
+### Using This Template as a Layer
+
+To use this Telegram Mini App template as a layer in another Nuxt project:
+
+1. **Clone or reference the layer**:
+   ```bash
+   # Option 1: Clone as a subdirectory
+   git clone https://github.com/patricktobias86/nuxt-telegram-mini-app.git layers/telegram-app
+
+   # Option 2: Add as git dependency (recommended for teams)
+   # In your project's package.json:
+   # "dependencies": {
+   #   "nuxt-telegram-mini-app": "github:patricktobias86/nuxt-telegram-mini-app"
+   # }
+   ```
+
+2. **Configure your Nuxt project** to extend this layer:
+   ```ts
+   // nuxt.config.ts
+   export default defineNuxtConfig({
+     extends: [
+       // Local path
+       './layers/telegram-app',
+       // Or npm package
+       // 'nuxt-telegram-mini-app'
+     ],
+     // Your custom config here
+   })
+   ```
+
+3. **Access layer features** in your project:
+   - **Components**: Use `<TgButton>`, `<TgCell>`, etc. in your pages
+   - **Composables**: Import `useMainButton`, `useHapticFeedback`, etc.
+   - **Pages**: Extend or override existing pages
+   - **Styles**: Inherit Tailwind and Telegram theme integration
+
+### Extending This Layer
+
+This template includes an `extends: []` configuration, allowing you to further extend it with additional layers:
+
+```ts
+// nuxt.config.ts in this template
+export default defineNuxtConfig({
+  extends: [
+    // Add your custom layers here
+    // './layers/my-custom-layer',
+    // 'my-published-layer'
+  ],
+  // ... rest of config
+})
+```
+
+### Layer Structure
+
+The template follows Nuxt's layer conventions:
+- `app/` directory contains all extendable content
+- `nuxt.config.ts` at root level defines layer configuration
+- Components, pages, and composables are automatically merged
+
+### Best Practices
+
+- **Override selectively**: Only override what you need to customize
+- **Maintain compatibility**: Keep Telegram SDK integration intact
+- **Test thoroughly**: Ensure Telegram features work in your extended app
+- **Version control**: Pin layer versions for stability
+
 ## 🚀 Deployment
 
 ### Manual Deployment

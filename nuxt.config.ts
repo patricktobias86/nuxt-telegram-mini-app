@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  extends: [],
   ssr: false,
   compatibilityDate: '2025-09-06',
   srcDir: 'app',
