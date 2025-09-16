@@ -40,7 +40,7 @@ html, body {
   overscroll-behavior: contain;
 }
 
-.tg-bg { background-color: var(--tg-theme-secondary-bg-color); }
+.tg-bg { background-color: var(---tg-theme-bg-color); }
 .tg-secondary-bg { background-color: var(--tg-theme-secondary-bg-color); }
 .tg-section-bg { background-color: var(--tg-theme-section-bg-color); }
 .tg-link, a { color: var(--tg-theme-link-color); }

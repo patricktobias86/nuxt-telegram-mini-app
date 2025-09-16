@@ -2,6 +2,7 @@
   <component :is="asTag" :class="rootClasses">
     <slot />
   </component>
+  <div class="h-2" />
 </template>
 
 <script setup lang="ts">

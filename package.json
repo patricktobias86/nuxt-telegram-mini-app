@@ -1,7 +1,7 @@
 {
   "name": "nuxt-telegram-mini-app",
   "description": "Structure and configurations for building a Telegram Mini App using Nuxt and TailWind, hosted on Netlify.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "build": "nuxt build",

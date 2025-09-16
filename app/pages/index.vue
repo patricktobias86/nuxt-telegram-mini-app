@@ -10,12 +10,10 @@
       <TgCell
         title="Navigation Demo"
         subtitle="Use the bottom navigation bar to navigate"
-        icon="i-heroicons-arrow-right-circle-20-solid"
+        icon="heroicons:clipboard-solid"
       />
-        <TgButton title="Demo Button" status="primary" haptic @click="() => haptic.impactOccurred('medium')" />
-        <TgButton title="Toggle Main Button" status="primary" haptic="selection" @click="toggleMain" />
         <TgCell
-        title="Example Cell without icon"
+        title="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo."
       />
         <template #append>
         Use the navigation bar at the bottom to switch between pages.
@@ -24,14 +22,13 @@
 
     <TgSection title="Haptic Feedback" inset>
       <TgCell title="Supported" :description="hapticSupported" icon="i-heroicons-bolt-20-solid" :border="false" />
-      <div class="p-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-        <TgButton title="Impact" :disabled="!hapticSupportedBool" @click="haptic.impactOccurred('medium')" />
-        <TgButton title="Notification" :disabled="!hapticSupportedBool" @click="haptic.notificationOccurred('success')" />
-        <TgButton title="Selection" :disabled="!hapticSupportedBool" @click="haptic.selectionChanged()" />
-        <!-- Example using TgButton's built-in haptic prop -->
-        <TgButton title="Built-in Haptic (medium)" haptic="impact-medium" />
-      </div>
     </TgSection>
+
+      <TgButton title="Impact" :disabled="!hapticSupportedBool" @click="haptic.impactOccurred('medium')" />
+      <TgButton title="Notification" :disabled="!hapticSupportedBool" @click="haptic.notificationOccurred('success')" />
+      <TgButton title="Selection" :disabled="!hapticSupportedBool" @click="haptic.selectionChanged()" />
+      <!-- Example using TgButton's built-in haptic prop -->
+      <TgButton title="Built-in Haptic (medium)" haptic="impact-medium" />
 
     <TgSection title="Init Data" inset>
       <TgCell title="User" :description="initUser" icon="i-heroicons-user-20-solid" />
@@ -42,10 +39,6 @@
     <TgSection title="Mini App" inset>
       <TgCell title="Supported" :description="miniSupported" icon="i-heroicons-check-badge-20-solid" />
       <TgCell title="Dark" :description="miniDark" />
-      <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <TgButton title="Header = bg" :disabled="!miniSupportedBool" haptic @click="mini.setHeaderColor('bg_color')" />
-        <TgButton title="BG = bg" :disabled="!miniSupportedBool" haptic @click="mini.setBackgroundColor('bg_color')" />
-      </div>
     </TgSection>
 
     <ClientOnly>
@@ -69,16 +62,18 @@
         <TgCell title="Height" :description="viewportHeight" />
         <TgCell title="Stable Height" :description="viewportStableHeight" />
         <TgCell title="Expanded" :description="String(viewport.expanded.value ?? false)" :border="false" />
-        <div class="p-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <TgButton title="Expand" haptic @click="viewport.expand" />
-          <TgButton title="Fullscreen" haptic="impact-light" @click="onRequestFullscreen" />
-          <TgButton title="Exit FS" haptic="impact-light" @click="onExitFullscreen" />
-        </div>
       </TgSection>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <TgButton title="Expand" haptic @click="viewport.expand" />
+        <TgButton title="Fullscreen" haptic="impact-light" @click="onRequestFullscreen" />
+        <TgButton title="Exit FS" haptic="impact-light" @click="onExitFullscreen" />
+      </div>
+
     </ClientOnly>
 
     <TgSection title="Links" inset>
-      <div class="p-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
+      <div class="p-4 grid grid-cols-1 sm:grid-cols-3">
         <TgButton title="Open Link" haptic @click="openLink('https://t.me/n')" />
         <TgButton title="Open Telegram" haptic @click="openTelegramLink('https://t.me/nuxt_tg_demo_bot')" />
         <TgButton title="Share URL" haptic="notification-success" :share-url="shareUrl" />

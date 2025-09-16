@@ -79,7 +79,7 @@ const bgClass = computed(() => props.tone === 'secondary' ? 'bg-secondaryBg' : '
 const showChevron = computed(() => props.chevron ?? isLink.value)
 
 const rootClass = computed(() => [
-  'w-full flex items-center gap-3 px-4 py-3',
+  'w-full flex items-center gap-3 p-4',
   bgClass.value,
   props.border ? 'border-b border-sectionSeparator last:border-b-0' : '',
   (isLink.value || props.clickable) ? 'hover:bg-secondaryBg transition-colors' : '',

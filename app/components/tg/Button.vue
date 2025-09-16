@@ -1,16 +1,17 @@
 <template>
-  <component :is="tag" v-bind="bind" :class="classes" :disabled="disabled || loading" @click="onClick">
+  <div class="px-3">
+    <component :is="tag" v-bind="bind" :class="classes" :disabled="disabled || loading" @click="onClick">
     <Icon v-if="loading" name="i-heroicons-arrow-path-20-solid" class="h-5 w-5 animate-spin" />
     <Icon v-if="icon && iconPosition === 'left' && !loading" :name="icon" class="h-5 w-5" />
     <span>{{ title }}</span>
     <Icon v-if="icon && iconPosition === 'right' && !loading" :name="icon" class="h-5 w-5" />
   </component>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { shareURL } from '~/composables/telegram'
-import { useHapticFeedback } from '~/composables/telegram'
+import { shareURL, useHapticFeedback  } from '~/composables/telegram'
 
 const props = withDefaults(defineProps<{
   title: string
