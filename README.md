@@ -9,6 +9,8 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, Ty
 ![Tailwind](https://img.shields.io/badge/Tailwind-3.x-38B2AC)
 ![Telegram API](https://img.shields.io/badge/Telegram%20API-6.2-26A5E4)
 
+<img height="600" alt="Localhost" src="https://github.com/user-attachments/assets/2bbf6549-25db-42d5-b380-fc4f20884538" />
+
 ## ✨ Features
 
 ### 🎯 Core Features
