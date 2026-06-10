@@ -2,10 +2,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, ref, computed } from 'vue'
+import { useMainButton, useInitData, useThemeParams } from '~/composables/telegram'
+import { toHex } from '~/utils/color'
 
 // Mock global process
 Object.defineProperty(globalThis, 'process', {
-  value: { client: true }
+  value: { client: true, env: { NODE_ENV: 'test' } }
 })
 
 // Mock Nuxt composables
@@ -21,8 +23,8 @@ vi.mock('#app', () => ({
   })
 }))
 
-vi.mock('vue-router', () => {
-  const actual = vi.importActual('vue-router')
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual<typeof import('vue-router')>('vue-router')
   return {
     ...actual,
     useRouter: () => ({
@@ -366,23 +368,21 @@ describe('Page Components', () => {
     it('should initialize Telegram composables correctly', () => {
       const TestPage = defineComponent({
         setup() {
-          const { useMainButton, useInitData, useThemeParams } = require('~/composables/telegram')
-          
           const main = useMainButton()
           const init = useInitData()
           const theme = useThemeParams()
           
           return {
-            mainButtonText: main.text,
+            mainButtonText: main.text.value,
             userName: init.user.value?.first_name,
-            bgColor: theme.backgroundColor
+            bgColor: theme.backgroundColor.value
           }
         },
         template: `
           <div>
-            <p>Button: {{ mainButtonText.value }}</p>
+            <p>Button: {{ mainButtonText }}</p>
             <p>User: {{ userName }}</p>
-            <p>BG: {{ bgColor.value }}</p>
+            <p>BG: {{ bgColor }}</p>
           </div>
         `
       })
@@ -399,9 +399,6 @@ describe('Page Components', () => {
     it('should use theme colors correctly', () => {
       const TestPage = defineComponent({
         setup() {
-          const { useThemeParams } = require('~/composables/telegram')
-          const { toHex } = require('~/utils/color')
-          
           const theme = useThemeParams()
           
           return {

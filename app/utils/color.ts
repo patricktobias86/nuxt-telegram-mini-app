@@ -1,17 +1,42 @@
 export type RGB = { r?: number; g?: number; b?: number }
 
+const namedColors: Record<string, string> = {
+  red: '#ff0000',
+  green: '#008000',
+  blue: '#0000ff'
+}
+
+function componentToHex(value: number): string | null {
+  if (!Number.isInteger(value) || value < 0 || value > 255) return null
+  return value.toString(16).padStart(2, '0')
+}
+
 export function toHex(value?: RGB | `#${string}` | string | null): string {
   if (!value) return '—'
 
   if (typeof value === 'string') {
-    const v = value.trim()
-    return v.startsWith('#') ? v : '—'
+    const v = value.trim().toLowerCase()
+    if (/^#[0-9a-f]{6}$/.test(v)) return v
+    if (/^#[0-9a-f]{3}$/.test(v)) {
+      return `#${v.slice(1).split('').map(c => c + c).join('')}`
+    }
+
+    const rgb = v.match(/^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/)
+    if (rgb) {
+      const parts = rgb.slice(1).map(part => componentToHex(Number(part)))
+      if (parts.every(Boolean)) return `#${parts.join('')}`
+    }
+
+    return namedColors[v] || '—'
   }
 
   const { r, g, b } = value
   if (typeof r !== 'number' || typeof g !== 'number' || typeof b !== 'number') return '—'
-  const to = (n: number) => n.toString(16).padStart(2, '0')
-  return `#${to(r)}${to(g)}${to(b)}`
+  const red = componentToHex(r)
+  const green = componentToHex(g)
+  const blue = componentToHex(b)
+  if (!red || !green || !blue) return '—'
+  return `#${red}${green}${blue}`
 }
 
 export function toRgb(value?: RGB | `#${string}` | string | null): { r: number; g: number; b: number } | null {
@@ -34,4 +59,3 @@ export function toRgb(value?: RGB | `#${string}` | string | null): { r: number; 
   if (typeof r !== 'number' || typeof g !== 'number' || typeof b !== 'number') return null
   return { r, g, b }
 }
-

@@ -7,6 +7,7 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, Ty
 ![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3.x-38B2AC)
+![Telegram API](https://img.shields.io/badge/Telegram%20API-6.2-26A5E4)
 
 ## ✨ Features
 
@@ -31,7 +32,9 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, Ty
 - **⬅️ Back Button** - Navigation back button control
 - **👤 User Data** - Access to Telegram user information
 - **🎨 Theme Integration** - Automatic Telegram theme colors
-- **📐 Viewport Control** - Responsive viewport management
+- **📐 Viewport Control** - Fullscreen, safe-area, and responsive viewport management
+- **🏠 Home Screen Shortcuts** - Add/check Mini App shortcut support
+- **📍 Device APIs** - Feature-detected storage, location, and motion access
 - **🔗 Deep Linking** - External and Telegram link handling
 - **📤 Sharing** - Built-in sharing functionality
 
@@ -159,7 +162,10 @@ import {
   useBackButton, 
   useHapticFeedback,
   useInitData,
-  useThemeParams 
+  useThemeParams,
+  useViewport,
+  useHomeScreen,
+  useTelegramStorage
 } from '~/composables/telegram'
 
 const main = useMainButton()
@@ -167,6 +173,9 @@ const back = useBackButton()
 const haptic = useHapticFeedback()
 const init = useInitData()
 const theme = useThemeParams()
+const viewport = useViewport()
+const homeScreen = useHomeScreen()
+const storage = useTelegramStorage('device')
 
 // Configure main button
 onMounted(() => {
@@ -187,6 +196,17 @@ onMounted(() => {
 
 // Access user data
 const userName = computed(() => init.user.value?.first_name || 'Guest')
+
+// Newer Telegram APIs are feature-detected
+function openFullscreen() {
+  if (!viewport.fullscreen.value) {
+    viewport.requestFullscreen()
+  }
+}
+
+function rememberPreference() {
+  storage.setItem('preferred_mode', theme.dark.value ? 'dark' : 'light')
+}
 
 // Use theme colors
 const bgColor = computed(() => theme.backgroundColor.value)
@@ -399,6 +419,7 @@ export default {
 - `setParams(params)` - Configure button
 - `onClick(callback)` - Handle clicks
 - `visible` - Visibility state
+- Supports shine effect, custom emoji icon, and other current BottomButton params
 
 #### `useBackButton()`
 - `show()` / `hide()` - Control visibility
@@ -419,6 +440,26 @@ export default {
 - `textColor` - Theme text color
 - `buttonColor` - Theme button color
 - And more theme colors...
+
+#### `useViewport()`
+- `requestFullscreen()` / `exitFullscreen()` - Toggle Telegram fullscreen when supported
+- `insets` - Device safe-area insets
+- `contentInsets` - Content safe-area insets
+
+#### `useMiniApp()`
+- `hideKeyboard()` - Hide the native keyboard when supported
+- `lockOrientation()` / `unlockOrientation()` - Control device orientation when supported
+- `enableVerticalSwipes()` / `disableVerticalSwipes()` - Control vertical swipe gestures
+
+#### New Telegram APIs
+- `useSecondaryButton()` - Control Telegram's secondary bottom button
+- `useSettingsButton()` - Control the Mini App settings menu button
+- `useHomeScreen()` - Add/check home screen shortcuts
+- `useEmojiStatus()` - Request emoji status access and open the set-status dialog
+- `useTelegramStorage(type)` - Use `cloud`, `device`, or `secure` Telegram storage
+- `useLocationManager()` - Initialize and request native location data
+- `useDeviceMotion()` - Access accelerometer, orientation, and gyroscope objects
+- `shareToStory()`, `shareMessage()`, `downloadFile()`, `requestChat()` - Wrappers for newer Telegram actions
 
 ### Components
 
@@ -605,8 +646,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [{
-        src: 'https://telegram.org/js/telegram-web-app.js?58',
-        defer: true
+        src: 'https://telegram.org/js/telegram-web-app.js?62'
       }]
     }
   }
@@ -615,7 +655,7 @@ export default defineNuxtConfig({
 
 ### Telegram WebApp Script
 
-The template automatically includes the Telegram WebApp script. The version can be updated in the Nuxt config.
+The template automatically includes the Telegram WebApp script. The wrapper feature-detects newer APIs because the available API version depends on the user's Telegram client.
 
 ## 🤝 Contributing
 

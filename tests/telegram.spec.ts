@@ -97,7 +97,7 @@ describe('telegram composables', () => {
 
     // Test that text changes work
     main.setParams({ text: 'Updated' })
-    expect(main.text.value).toBe('Submit')
+    expect(main.text.value).toBe('Updated')
 
     main.unmount()
     expect(main.mounted.value).toBe(false)
