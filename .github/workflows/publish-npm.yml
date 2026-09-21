@@ -1,0 +1,65 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - package.json
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone "$GITHUB_REPOSITORY" .
+          git checkout "$GITHUB_SHA"
+
+      - name: Check version change
+        id: version
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          current_version=$(node -p "require('./package.json').version")
+          previous_version=$(git show "$BEFORE_SHA:package.json" 2>/dev/null | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version" || true)
+
+          if [ "$current_version" = "$previous_version" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "version=$current_version" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare Node.js
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          node --version
+          npm install --global npm@11
+          npm --version
+          npm config set registry https://registry.npmjs.org
+
+      - name: Install dependencies
+        if: steps.version.outputs.changed == 'true'
+        run: npm ci
+
+      - name: Test
+        if: steps.version.outputs.changed == 'true'
+        run: npm test
+
+      - name: Publish package
+        if: steps.version.outputs.changed == 'true'
+        run: npm publish --provenance
+
+      - name: Create GitHub release
+        if: steps.version.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: gh release create "v$VERSION" --target "$GITHUB_SHA" --generate-notes --title "v$VERSION"
