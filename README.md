@@ -18,7 +18,6 @@ A comprehensive template for building Telegram Mini Apps using Nuxt 4, Vue 3, Ty
 - **📱 Telegram WebApp SDK** - Full integration with Telegram Mini App APIs
 - **🎨 Tailwind CSS** - Utility-first CSS framework with Telegram theme integration
 - **⚡ SPA Mode** - Optimized for Telegram Mini App deployment
-- **🌐 Netlify Ready** - Pre-configured for seamless deployment
 
 ### 🧩 Components Library
 - **TgButton** - Telegram-styled buttons with haptic feedback
