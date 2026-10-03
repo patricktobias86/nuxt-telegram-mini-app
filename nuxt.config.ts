@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-09-06',
   srcDir: 'app',
   devtools: {
-    enabled: true,
+    enabled: false,
 
     timeline: {
       enabled: true,
