@@ -36,17 +36,7 @@ declare global {
 
 describe('telegram composables', () => {
   beforeEach(() => {
-    // Minimal sessionStorage polyfill for Node environment
-    const store = new Map<string, string>()
-    // @ts-expect-error polyfill for test env
-    globalThis.sessionStorage = {
-      get length() { return store.size },
-      clear: () => store.clear(),
-      getItem: (k: string) => (store.has(k) ? store.get(k)! : null),
-      key: (i: number) => Array.from(store.keys())[i] ?? null,
-      removeItem: (k: string) => void store.delete(k),
-      setItem: (k: string, v: string) => void store.set(k, v),
-    }
+    sessionStorage.clear()
 
     // Mock Telegram WebApp
     if (!window.Telegram) window.Telegram = { WebApp: { ready: () => null } }
